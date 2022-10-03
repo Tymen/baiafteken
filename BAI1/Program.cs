@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BAI
 {
@@ -15,7 +16,30 @@ namespace BAI
         /// ------------------------------------------------------------
         public static void Opdr1FilterList(List<int> lijst)
         {
-            // *** IMPLEMENTATION HERE *** //
+            Dictionary<string, int> uniqueInts = new Dictionary<string, int>();
+
+            for (int x = 0; x < lijst.Count; x++)
+            {
+                string index = lijst[x].ToString();
+                if (uniqueInts.ContainsKey(index))
+                {
+                    uniqueInts[index] += 1;
+                }
+                else
+                {
+                    uniqueInts.Add(index, 1);
+                }
+            }
+
+            for (int i = 0; i < lijst.Count; i++)
+            {
+                string key = lijst[i].ToString();
+                if (uniqueInts[key] < 2)
+                {
+                    lijst.RemoveAt(i);
+                    i -= 1;
+                }
+            }
         }
 
 
@@ -29,8 +53,13 @@ namespace BAI
         public static Queue<int> Opdr2aQueue50()
         {
             Queue<int> q = new Queue<int>();
-
-            // *** IMPLEMENTATION HERE *** //
+            int i = 1;
+            
+            while (q.Count < 50)
+            {
+                q.Enqueue(i);
+                i++;
+            }
 
             return q;
         }
@@ -48,9 +77,16 @@ namespace BAI
         public static Stack<int> Opdr2bStackFromQueue(Queue<int> queue)
         {
             Stack<int> stack = new Stack<int>();
-
-            // *** IMPLEMENTATION HERE *** //
-
+            
+            while (queue.Count > 0)
+            {
+                int number = queue.Dequeue();
+                if ((number % 4) == 0)
+                {
+                    stack.Push(number);
+                }
+            }
+            
             return stack;
         }
 
@@ -65,9 +101,18 @@ namespace BAI
         /// ------------------------------------------------------------
         public static Stack<int> Opdr3RandomNumbers(int lower, int upper, int count)
         {
+            Dictionary<int, int> integersDictionary = new Dictionary<int, int>();
+            Random random = new Random();
             Stack<int> stack = new Stack<int>();
-
-            // *** IMPLEMENTATION HERE *** //
+            while (integersDictionary.Count < count)
+            {
+                int randomInt = random.Next(lower, upper + 1);
+                if (!integersDictionary.ContainsKey(randomInt))
+                {
+                    integersDictionary.Add(randomInt, randomInt);
+                    stack.Push(randomInt);
+                }
+            }
 
             return stack;
         }
